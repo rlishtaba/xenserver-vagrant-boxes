@@ -30,7 +30,7 @@ is relying on official `xenserver` packer builder which is originally posted [he
   export GOPATH=$HOME/go-workspace;
   export PATH=$PATH:$GOROOT/bin:$GOPATH/bin;
   ```
-  * Add `packer` source and `gox` tool
+  * Add `packer` source to `GOPATH`
   ```bash
   go get github.com/hashicorp/packer
   ```
@@ -43,7 +43,7 @@ is relying on official `xenserver` packer builder which is originally posted [he
   ```bash
   go get github.com/mitchellh/gox;
   ```
-  * Add `go-vnc` tool
+  * Add `go-vnc` tool to `GOPATH`
   ```bash
   go get github.com/mitchellh/go-vnc;
   ```
@@ -131,7 +131,7 @@ LOCAL_XVA_BASE_BOX_FILE="${BOX}-${VER}.xva";
 curl --upload $LOCAL_XVA_BASE_BOX_FILE $URL;
 ```
 
-* Make a vagrant base box content files and `tar` them into `.box` archive.
+* Make new vagrant base box content files an then `tar` them into `.box` archive.
 ```bash
 
 # Create vagrant provider metadata file.
@@ -162,7 +162,6 @@ cat > Vagrantfile <<EOF
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
