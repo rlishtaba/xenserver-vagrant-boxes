@@ -6,7 +6,7 @@
       "http_port_min": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MIN`}}",
       "http_port_max": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MAX`}}",
 
-      "mirror": "http://nexus.ncr.systems/repository/releases.ubuntu.com/releases",
+      "mirror": "http://releases.ubuntu.com/releases",
       "mirror_directory": "16.04.4",
       "template": "ubuntu-16.04.4",
 
