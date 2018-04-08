@@ -82,12 +82,108 @@ export PASSWORD=password
 
 # tell packer to make a base box
 $GOPATH/bin/packer build \
+      -only=xenserver-iso\
       -var 'mirror=http://releases.ubuntu.com' \
       ubuntu-16.04-amd64.json
 ```
 
 The process could take some time, make sure your build server can maintain duplex connection
 to selected xenserver.
+
+## ISO mirror alternatives
+
+### Cent OS
+
+```bash
+$GOPATH/bin/packer build \
+      -only=xenserver-iso\
+      -var 'mirror=http://mirrors.kernel.org/centos' \
+      centos-7.4-x86_64.json
+```
+
+### Ubuntu
+
+```bash
+$GOPATH/bin/packer build \
+      -only=xenserver-iso\
+      -var 'mirror=http://releases.ubuntu.com' \
+      ubuntu-16.04-amd64.json
+```
+
+### Packaging your base boxes
+
+This stage is written with assumption that `packer` biuld has been completed
+successfuly.
+
+* Upload produced `xva` file to file storge service/server
+```bash
+BOX_VERSION="0.1.0";
+REPO="http://your-repo.com/repository/vagrant-boxes/xenserver";
+BOX="ubuntu-16.04";
+
+# Your remote binary repo destination URL/
+URL="${REPO}/${BOX}/${VER}/export.xva";
+
+# This is the product of packer build process.
+LOCAL_XVA_BASE_BOX_FILE="${BOX}-${VER}.xva";
+
+# Upload local box to your remote binary repo.
+curl --upload $LOCAL_XVA_BASE_BOX_FILE $URL;
+```
+
+* Make a vagrant base box content files and `tar` them into `.box` archive.
+```bash
+
+# Create vagrant provider metadata file.
+echo "{\"provider\": \"xenserver\"}" > metadata.json;
+
+# Create default vagrant file
+cat > Vagrantfile <<EOF
+Vagrant.configure(2) do |config|
+  config.vm.provider :xenserver do |xs|
+    xs.xva_url = "$URL"
+  end
+end
+EOF
+
+# Make a vagrant box archive
+tar -cvf "${BOX}-${VER}.box" metadata.json Vagrantfile
+```
+* Upload `vagrant` box to your remote repository
+```bash
+
+# Upload vagrant box definition to your remote binary repository
+curl --upload "${BOX}-${VER}.box" "${REPO}/${BOX}/${VER}/you-vagrant-base-vm.box"
+```
+* Create `vagrant` base box release or use mine
+* Create new `Vagrantfile`
+```bash
+cat > Vagrantfile <<EOF
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = 'rlishtaba/ubuntu-16.04.4-server'
+  config.vm.box_version = '0.3.0'
+
+  config.vm.provider :xenserver do |xs|
+    xs.xs_host = 'your.xenserver.com'
+    xs.xs_username = 'root'
+    xs.xs_password = 'password'
+    xs.pv = true
+    xs.memory = 2048
+    xs.use_himn = false
+  end
+
+  config.vm.network 'public_network', bridge: 'xenbr0'
+end
+EOF
+
+* Execute `vagrant up`.
+
 
 ## Contacts
 
