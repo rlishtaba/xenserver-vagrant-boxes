@@ -26,7 +26,7 @@
       "output_directory": "../builds/packer-{{user `template`}}-xenserver",
 
       "boot_command": [
-        "<up><wait><tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `ks_path`}}<enter><wait>"
+        "<up><wait><tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/7/ks.cfg<enter><wait>"
       ],
       "boot_wait": "15s"
     },
@@ -202,6 +202,7 @@
         "scripts/networking.sh",
         "../provision/vagrant.sh",
         "../provision/virtualbox.sh",
+        "../provision/xenserver.sh",
         "../provision/vmware.sh",
         "../provision/parallels.sh",
         "scripts/cleanup.sh",
