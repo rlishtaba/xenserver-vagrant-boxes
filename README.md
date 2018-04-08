@@ -32,11 +32,11 @@ is relying on official `xenserver` packer builder which is originally posted [he
   ```
   * Add `packer` source to `GOPATH`
   ```bash
-  go get github.com/hashicorp/packer
+  go get github.com/hashicorp/packer;
   ```
   * Compile `packer`
   ```bash
-  cd $GOPATH/src/github.com/hashicorp/packer
+  cd $GOPATH/src/github.com/hashicorp/packer;
   go build -o bin/packer .;
   ```
   * Add `gox` tool to `GOPATH`
@@ -73,18 +73,18 @@ The following snippet should give you an idea how to make your base-box of `ubun
 
 ```bash
 # change to workspace
-cd <this repo path>/ubuntu
+cd <this repo path>/ubuntu;
 
 # export necessary variables into shell context
-export HOST=my.xenhost.com
-export USERNAME=root
-export PASSWORD=password
+export HOST=my.xenhost.com;
+export USERNAME=root;
+export PASSWORD=password;
 
 # tell packer to make a base box
 $GOPATH/bin/packer build \
       -only=xenserver-iso\
       -var 'mirror=http://releases.ubuntu.com' \
-      ubuntu-16.04-amd64.json
+      ubuntu-16.04-amd64.json;
 ```
 
 The process could take some time, make sure your build server can maintain duplex connection
@@ -98,7 +98,7 @@ to selected xenserver.
 $GOPATH/bin/packer build \
       -only=xenserver-iso\
       -var 'mirror=http://mirrors.kernel.org/centos' \
-      centos-7.4-x86_64.json
+      centos-7.4-x86_64.json;
 ```
 
 ### Ubuntu
@@ -107,7 +107,7 @@ $GOPATH/bin/packer build \
 $GOPATH/bin/packer build \
       -only=xenserver-iso\
       -var 'mirror=http://releases.ubuntu.com' \
-      ubuntu-16.04-amd64.json
+      ubuntu-16.04-amd64.json;
 ```
 
 ### Packaging your base boxes
@@ -153,7 +153,7 @@ tar -cvf "${BOX}-${VER}.box" metadata.json Vagrantfile
 ```bash
 
 # Upload vagrant box definition to your remote binary repository
-curl --upload "${BOX}-${VER}.box" "${REPO}/${BOX}/${VER}/you-vagrant-base-vm.box"
+curl --upload "${BOX}-${VER}.box" "${REPO}/${BOX}/${VER}/you-vagrant-base-vm.box";
 ```
 * Create `vagrant` base box release or use mine
 * Create new `Vagrantfile`
@@ -182,7 +182,6 @@ end
 EOF
 
 * Execute `vagrant up`.
-
 
 ## Contacts
 
