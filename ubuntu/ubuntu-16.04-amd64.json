@@ -1,0 +1,100 @@
+{
+  "variables": {
+      "remote_host": "{{env `HOST`}}",
+      "remote_username": "{{env `USERNAME`}}",
+      "remote_password": "{{env `PASSWORD`}}",
+      "http_port_min": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MIN`}}",
+      "http_port_max": "{{env `HTTP_PORT`}}{{env `HTTP_PORT_MAX`}}",
+
+      "mirror": "http://nexus.ncr.systems/repository/releases.ubuntu.com/releases",
+      "mirror_directory": "16.04.4",
+      "template": "ubuntu-16.04.4",
+
+      "iso_checksum": "ee834fbeb94cc55972b38caafa2029c29625e2e8",
+      "iso_checksum_type": "sha1",
+      "iso_name": "ubuntu-16.04.4-server-amd64.iso",
+
+      "cpus": "3",
+      "disk_size": "65536"
+  },
+  "builders": [
+    {
+      "type": "xenserver-iso",
+      "remote_host": "{{user `remote_host`}}",
+      "remote_username": "{{user `remote_username`}}",
+      "remote_password": "{{user `remote_password`}}",
+
+      "http_port_min": "{{user `http_port_min`}}",
+      "http_port_max": "{{user `http_port_max`}}",
+      "http_directory": "http",
+
+      "vm_name": "{{ user `template`}}-xenserver",
+
+      "disk_size": "{{ user `disk_size`}}",
+
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "10000s",
+
+      "output_directory": "../builds/packer-{{user `template`}}-xenserver",
+
+      "boot_command": [
+        "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US.UTF-8<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US.UTF-8<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname=vagrant<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "15s"
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "scripts/update.sh",
+        "../provision/sshd.sh",
+        "scripts/networking.sh",
+        "scripts/sudoers.sh",
+        "scripts/vagrant.sh",
+        "../provision/virtualbox.sh",
+        "../provision/xenserver.sh",
+        "scripts/vmware.sh",
+        "../provision/parallels.sh",
+        "scripts/hyperv.sh",
+        "scripts/cleanup.sh",
+        "../provision/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
