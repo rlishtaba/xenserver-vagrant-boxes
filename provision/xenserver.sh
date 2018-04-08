@@ -14,7 +14,7 @@ xenserver-iso|xenserver-pv)
     mkdir -p /tmp/xenserver;
     mount -o loop $HOME_DIR/$ISO /tmp/xenserver;
     cd /tmp/xenserver/Linux
-    sh install.sh -n \
+    ./install.sh -n \
         || echo "install.sh exited $? and is suppressed.";
     cd $HOME_DIR;
     umount /tmp/xenserver;
