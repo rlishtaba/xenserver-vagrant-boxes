@@ -198,14 +198,14 @@
       "expect_disconnect": true,
       "scripts": [
         "scripts/update.sh",
-        "../_common/sshd.sh",
+        "../provision/sshd.sh",
         "scripts/networking.sh",
-        "../_common/vagrant.sh",
-        "../_common/virtualbox.sh",
-        "../_common/vmware.sh",
-        "../_common/parallels.sh",
+        "../provision/vagrant.sh",
+        "../provision/virtualbox.sh",
+        "../provision/vmware.sh",
+        "../provision/parallels.sh",
         "scripts/cleanup.sh",
-        "../_common/minimize.sh"
+        "../provision/minimize.sh"
       ],
       "type": "shell"
     }
