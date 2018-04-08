@@ -16,13 +16,16 @@ is relying on official `xenserver` packer builder which is originally posted [he
 
 * Install `Golang` and export nessesary variables:
   * Download `golang` release from [here](https://golang.org/dl/)
-  * Untar archive and prepare envirounment. Example will be using `go` v1.9
+  * Untar archive and prepare envirounment. Example will be using `golang` release `v1.9.5`.
   ```bash
   RELEASE="go1.9.5.linux-amd64";
   cd /tmp && curl -L -O "https://dl.google.com/go/${RELEASE}.tar.gz";
   tar -zxvf "${RELEASE}.tar.gz";
   mv -v go $HOME/go-1.9.5;
   rm -f "/tmp/${RELEASE}.tar.gz";
+  ```
+  * Export `golang` env variables
+  ```bash
   export GOROOT=$HOME/go-1.9.5;
   export GOPATH=$HOME/go-workspace;
   export PATH=$PATH:$GOROOT/bin:$GOPATH/bin;
