@@ -201,6 +201,7 @@
         "../provision/sshd.sh",
         "scripts/networking.sh",
         "../provision/vagrant.sh",
+        "scripts/install_base_deps.sh",
         "../provision/virtualbox.sh",
         "../provision/xenserver.sh",
         "../provision/vmware.sh",
