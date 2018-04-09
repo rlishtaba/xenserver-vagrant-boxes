@@ -180,9 +180,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network 'public_network', bridge: 'xenbr0'
 end
 EOF
-
+```
 * Execute `vagrant up`.
+
+## List of vagrant box versions available @ Vagrant cloud
+
+* [ubuntu-16.04.4-server](https://app.vagrantup.com/rlishtaba/boxes/ubuntu-16.04.4-server)
+* [centos-7.4-minimal](https://app.vagrantup.com/rlishtaba/boxes/centos-7.4-minimal)
 
 ## Contacts
 
-[Roman Lishtaba](roman@lishtaba.com)
+* [Roman Lishtaba](roman@lishtaba.com)
