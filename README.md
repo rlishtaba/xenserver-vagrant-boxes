@@ -98,7 +98,7 @@ to selected xenserver.
 $GOPATH/bin/packer build \
       -only=xenserver-iso\
       -var 'mirror=http://mirrors.kernel.org/centos' \
-      centos-7.4-x86_64.json;
+      centos-7.4-x86_64-minimal.json;
 ```
 
 ### Ubuntu
@@ -166,7 +166,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = 'rlishtaba/ubuntu-16.04.4-server'
-  config.vm.box_version = '0.3.0'
+  config.vm.box_version = '0.4.0'
 
   config.vm.provider :xenserver do |xs|
     xs.xs_host = 'your.xenserver.com'
